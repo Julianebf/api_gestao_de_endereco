@@ -1,0 +1,35 @@
+<article class="card <%= "card--primary" if address.primary? %>" id="<%= dom_id(address) %>">
+  <div class="card__header">
+    <h2 class="card__title">
+      <%= link_to address.display_title, address %>
+    </h2>
+    <div class="badges">
+      <% if address.primary? %>
+        <span class="badge badge--primary">Principal</span>
+      <% end %>
+      <span class="badge badge--uf"><%= address.state %></span>
+    </div>
+  </div>
+
+  <div class="card__body">
+    <p><%= address.street_line %></p>
+    <p><%= address.neighborhood %> — <%= address.city %>/<%= address.state %></p>
+    <p class="card__cep">CEP <%= address.formatted_cep %></p>
+  </div>
+
+  <div class="card__actions">
+    <%= link_to "Detalhes", address, class: "btn btn--sm" %>
+    <%= link_to "Editar", edit_address_path(address), class: "btn btn--sm" %>
+    <% unless address.primary? %>
+      <%= button_to "Tornar principal",
+                    set_primary_address_path(address),
+                    method: :patch,
+                    class: "btn btn--sm" %>
+    <% end %>
+    <%= button_to "Excluir",
+                  address,
+                  method: :delete,
+                  data: { turbo_confirm: "Deseja realmente excluir este endereço?" },
+                  class: "btn btn--sm btn--danger" %>
+  </div>
+</article>

@@ -1,0 +1,68 @@
+<% content_for :title, @address.display_title %>
+
+<div class="page-header">
+  <div>
+    <h1><%= @address.display_title %></h1>
+    <p class="page-subtitle"><%= @address.full_address %></p>
+  </div>
+
+  <div class="badges">
+    <% if @address.primary? %>
+      <span class="badge badge--primary">Principal</span>
+    <% end %>
+    <span class="badge badge--uf"><%= @address.state %></span>
+  </div>
+</div>
+
+<div class="card">
+  <dl class="detail-list">
+    <div>
+      <dt>Apelido / Rótulo</dt>
+      <dd><%= @address.label.presence || "—" %></dd>
+    </div>
+    <div>
+      <dt>CEP</dt>
+      <dd><%= @address.formatted_cep %></dd>
+    </div>
+    <div>
+      <dt>Logradouro</dt>
+      <dd><%= @address.street %></dd>
+    </div>
+    <div>
+      <dt>Número</dt>
+      <dd><%= @address.number %></dd>
+    </div>
+    <div>
+      <dt>Complemento</dt>
+      <dd><%= @address.complement.presence || "—" %></dd>
+    </div>
+    <div>
+      <dt>Bairro</dt>
+      <dd><%= @address.neighborhood %></dd>
+    </div>
+    <div>
+      <dt>Cidade / UF</dt>
+      <dd><%= @address.city %> / <%= @address.state %></dd>
+    </div>
+    <div>
+      <dt>País</dt>
+      <dd><%= @address.country %></dd>
+    </div>
+  </dl>
+
+  <div class="card__actions">
+    <%= link_to "Voltar", addresses_path, class: "btn" %>
+    <%= link_to "Editar", edit_address_path(@address), class: "btn btn--primary" %>
+    <% unless @address.primary? %>
+      <%= button_to "Definir como principal",
+                    set_primary_address_path(@address),
+                    method: :patch,
+                    class: "btn" %>
+    <% end %>
+    <%= button_to "Excluir",
+                  @address,
+                  method: :delete,
+                  data: { turbo_confirm: "Deseja realmente excluir este endereço?" },
+                  class: "btn btn--danger" %>
+  </div>
+</div>

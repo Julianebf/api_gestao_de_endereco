@@ -1,0 +1,49 @@
+<% content_for :title, "Endereços" %>
+
+<div class="page-header">
+  <div>
+    <h1>Endereços cadastrados</h1>
+    <p class="page-subtitle">
+      <%= pluralize(@total_count, "endereço cadastrado", "endereços cadastrados") %>
+    </p>
+  </div>
+</div>
+
+<%= form_with url: addresses_path, method: :get, class: "filter-bar" do |form| %>
+  <div class="field filter-bar__search">
+    <%= form.label :q, "Buscar" %>
+    <%= form.search_field :q, value: @query, placeholder: "CEP, rua, bairro, cidade ou apelido..." %>
+  </div>
+
+  <div class="field filter-bar__state">
+    <%= form.label :state, "Estado (UF)" %>
+    <%= form.select :state,
+                    options_for_select(@states_in_use.presence || Address::BRAZILIAN_STATES.keys, @state_filter),
+                    { include_blank: "Todos" } %>
+  </div>
+
+  <div class="filter-bar__actions">
+    <%= form.submit "Filtrar", class: "btn btn--primary" %>
+    <% if @query.present? || @state_filter.present? %>
+      <%= link_to "Limpar", addresses_path, class: "btn" %>
+    <% end %>
+  </div>
+<% end %>
+
+<% if @addresses.any? %>
+  <div class="address-grid">
+    <%= render @addresses %>
+  </div>
+<% else %>
+  <div class="empty-state">
+    <% if @query.present? || @state_filter.present? %>
+      <h2>Nenhum endereço encontrado</h2>
+      <p>Tente ajustar os filtros de busca ou limpar a pesquisa.</p>
+      <%= link_to "Limpar filtros", addresses_path, class: "btn" %>
+    <% else %>
+      <h2>Nenhum endereço cadastrado ainda</h2>
+      <p>Cadastre o primeiro endereço para começar a organizar seus locais.</p>
+      <%= link_to "Cadastrar endereço", new_address_path, class: "btn btn--primary" %>
+    <% end %>
+  </div>
+<% end %>

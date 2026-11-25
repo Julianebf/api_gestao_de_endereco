@@ -1,0 +1,23 @@
+one:
+  label: Casa
+  cep: "01310100"
+  street: Avenida Paulista
+  number: "1000"
+  complement: Apto 101
+  neighborhood: Bela Vista
+  city: São Paulo
+  state: SP
+  country: Brasil
+  primary: true
+
+two:
+  label: Trabalho
+  cep: "20040020"
+  street: Avenida Rio Branco
+  number: "156"
+  complement: Sala 1204
+  neighborhood: Centro
+  city: Rio de Janeiro
+  state: RJ
+  country: Brasil
+  primary: false

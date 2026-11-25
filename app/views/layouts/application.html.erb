@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <title><%= content_for?(:title) ? "#{yield(:title)} | Gestão de Endereços" : "Gestão de Endereços" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body>
+    <header class="topbar">
+      <div class="container topbar__inner">
+        <%= link_to root_path, class: "brand" do %>
+          <span class="brand__mark" aria-hidden="true">⌖</span>
+          <span>Gestão de Endereços</span>
+        <% end %>
+
+        <nav class="topbar__actions">
+          <%= link_to "Novo endereço", new_address_path, class: "btn btn--primary" %>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container main-content">
+      <% if notice.present? %>
+        <div class="flash flash--notice" role="status"><%= notice %></div>
+      <% end %>
+      <% if alert.present? %>
+        <div class="flash flash--alert" role="alert"><%= alert %></div>
+      <% end %>
+
+      <%= yield %>
+    </main>
+  </body>
+</html>

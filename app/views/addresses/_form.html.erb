@@ -1,0 +1,86 @@
+<%= form_with model: address, class: "form-card", data: { controller: "cep" } do |form| %>
+  <% if address.errors.any? %>
+    <div class="error-box" role="alert">
+      <h2>
+        <%= pluralize(address.errors.count, "erro impediu", "erros impediram") %>
+        que este endereço fosse salvo:
+      </h2>
+      <ul>
+        <% address.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-grid">
+    <div class="field col-6">
+      <%= form.label :label %>
+      <%= form.text_field :label, placeholder: "Ex.: Casa, Trabalho, Depósito", maxlength: 80 %>
+    </div>
+
+    <div class="field col-6">
+      <%= form.label :cep %>
+      <div class="cep-row">
+        <%= form.text_field :cep,
+                            value: address.formatted_cep,
+                            placeholder: "00000-000",
+                            maxlength: 9,
+                            required: true,
+                            data: { cep_target: "cep", action: "input->cep#format" } %>
+        <button type="button" class="btn" data-action="cep#lookup">Buscar CEP</button>
+      </div>
+      <span class="cep-status" data-cep-target="status"></span>
+    </div>
+
+    <div class="field col-8">
+      <%= form.label :street %>
+      <%= form.text_field :street, placeholder: "Av. Paulista", required: true, data: { cep_target: "street" } %>
+    </div>
+
+    <div class="field col-4">
+      <%= form.label :number %>
+      <%= form.text_field :number, placeholder: "1000", required: true, data: { cep_target: "number" } %>
+    </div>
+
+    <div class="field col-6">
+      <%= form.label :complement %>
+      <%= form.text_field :complement, placeholder: "Apto 42, Bloco B (opcional)" %>
+    </div>
+
+    <div class="field col-6">
+      <%= form.label :neighborhood %>
+      <%= form.text_field :neighborhood, placeholder: "Bela Vista", required: true, data: { cep_target: "neighborhood" } %>
+    </div>
+
+    <div class="field col-6">
+      <%= form.label :city %>
+      <%= form.text_field :city, placeholder: "São Paulo", required: true, data: { cep_target: "city" } %>
+    </div>
+
+    <div class="field col-3">
+      <%= form.label :state %>
+      <%= form.select :state,
+                      Address.state_options,
+                      { include_blank: "Selecione..." },
+                      { required: true, data: { cep_target: "state" } } %>
+    </div>
+
+    <div class="field col-3">
+      <%= form.label :country %>
+      <%= form.text_field :country, required: true %>
+    </div>
+
+    <div class="col-12">
+      <label class="checkbox-field">
+        <%= form.check_box :primary %>
+        <span>Definir este como endereço principal</span>
+      </label>
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <%= form.submit class: "btn btn--primary" %>
+    <%= link_to "Cancelar", address.persisted? ? address_path(address) : addresses_path, class: "btn" %>
+  </div>
+<% end %>

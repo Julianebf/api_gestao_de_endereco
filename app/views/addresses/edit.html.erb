@@ -1,0 +1,10 @@
+<% content_for :title, "Editar endereço" %>
+
+<div class="page-header">
+  <div>
+    <h1>Editar endereço</h1>
+    <p class="page-subtitle"><%= @address.display_title %></p>
+  </div>
+</div>
+
+<%= render "form", address: @address %>
